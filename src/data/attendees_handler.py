@@ -1,7 +1,7 @@
 import uuid
 from src.models.repository.attendees_repository import AttendeesRepository
 from src.http_types.http_request import HttpRequest
-from src.http_types.http_response import HttpResponde
+from src.http_types.http_response import HttpResponse
 from src.models.repository.events_repository import EventsRepository
 
 class AttendeesHandler:
@@ -9,7 +9,7 @@ class AttendeesHandler:
     self.__attendees_repository = AttendeesRepository()
     self.__event_repository = EventsRepository()
 
-  def registry(self, http_request: HttpRequest) -> HttpResponde:
+  def registry(self, http_request: HttpRequest) -> HttpResponse:
       body = http_request.body
       event_id = http_request.param["event_id"]
 
@@ -23,14 +23,14 @@ class AttendeesHandler:
       body["event_id"] = event_id
       self.__attendees_repository.insert_attendee(body)
 
-      return HttpResponde(body=None, status_code=201)
+      return HttpResponse(body=None, status_code=201)
   
-  def find_attendee_badge(self, http_request: HttpRequest) -> HttpResponde:
+  def find_attendee_badge(self, http_request: HttpRequest) -> HttpResponse:
       attendee_id = http_request.param["attendee_id"]
       badge = self.__attendees_repository.get_attendee_badge_by_id(attendee_id)
       if not badge: raise Exception("Participante nao encontrado")
 
-      return HttpResponde (
+      return HttpResponse (
          body= {
             "badge": {
                "name": badge.name,
@@ -40,3 +40,26 @@ class AttendeesHandler:
          },
          status_code= 200
       )
+  
+  def find_attendees_from_event(self, http_request: HttpRequest) -> HttpResponse:
+     event_id = http_request.param["event_id"]
+     attendees = self.__attendees_repository.get_attendees_by_event_id(event_id)
+     if not attendees: raise Exception("Participantes nao encontrados")
+
+     formartted_attendees = []
+
+     for attendee in attendees:
+        formartted_attendees.append(
+           {
+              "id": attendee.id,
+              "name": attendee.name,
+              "email": attendee.email,
+              "checkedInAt": attendee.checkedInAt,
+              "createdAt": attendee.createdAt
+           }
+        )
+      
+     return HttpResponse(
+        body={ "attendees": formartted_attendees},
+        status_code=200
+     )
