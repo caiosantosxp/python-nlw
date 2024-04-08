@@ -8,4 +8,6 @@ app = Flask(__name__)
 CORS(app)
 
 from src.main.router.events_routes import event_route_bp
+from src.main.router.atendees_routes import attendees_route_bp
 app.register_blueprint(event_route_bp)
+app.register_blueprint(attendees_route_bp)
