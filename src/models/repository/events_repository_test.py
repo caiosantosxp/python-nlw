@@ -7,9 +7,9 @@ db_connection_handler.connect_to_db()
 @pytest.mark.skip(reason="Novo registro em banco de dados")
 def test_insert_event():
   event = {
-    "uuid":"meu-uuid-id-teste",
+    "uuid":"meu-uuid-id-teste2",
     "title":"meu-title-here",
-    "slug":"meu-slug-aqui",
+    "slug":"meu-slug-aqui2",
     "maximum_attendees":20,
   }
 
@@ -20,7 +20,7 @@ def test_insert_event():
 
 @pytest.mark.skip(reason="Nao necessita")
 def test_get_event_by_id():
-  event_id = "meu-uuid-id-teste"
+  event_id = "meu-uuid-id-testeaaaa"
   events_repository = EventsRepository()
   response = events_repository.get_event_by_id(event_id)
   print(response)
