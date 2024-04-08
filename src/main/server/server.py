@@ -9,5 +9,8 @@ CORS(app)
 
 from src.main.route.events_routes import event_route_bp
 from src.main.route.atendees_routes import attendees_route_bp
+from src.main.route.check_in_routes import check_in_route_bp
+
 app.register_blueprint(event_route_bp)
 app.register_blueprint(attendees_route_bp)
+app.register_blueprint(check_in_route_bp)

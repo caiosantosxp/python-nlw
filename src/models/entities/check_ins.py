@@ -7,7 +7,6 @@ class CheckIns(Base):
 
   id = Column(Integer, primary_key=True)
   created_at = Column(DateTime, default=func.now())
-  email = Column(String, nullable=False)
   attendeeId = Column(String, ForeignKey("attendees.id"))
 
   def __repr__(self):
